@@ -11,29 +11,6 @@ import nltk
 nltk.download('wordnet')
 nltk.download('omw-1.4')
 
-import streamlit as st
-import gdown
-import os
-
-# Google Drive links to the files
-file_1_url = "https://drive.google.com/uc?id=1gjn785gREju8bK5VbJhwJZK-oezQurMa"
-file_2_url = "https://drive.google.com/uc?id=1JPQmbfl9nGDDUqKoHtPGPOyJyDhat9pb"
-
-# Paths to where you want to store the files
-file_1_path = "model_components/libtensorflow_cc.so.2"
-file_2_path = "model_components/libtensorflow_framework.so.2"
-
-# Function to download the files if they don't exist
-def download_files():
-    if not os.path.exists(file_1_path) or not os.path.exists(file_2_path):
-        st.info("Downloading necessary files...")
-        gdown.download(file_1_url, file_1_path, quiet=False)
-        gdown.download(file_2_url, file_2_path, quiet=False)
-        st.success("Files downloaded successfully!")
-
-# Download files at the start
-download_files()
-
 
 # Load artifacts
 model = load_model("model_components/emotion_nn_model.h5")
@@ -104,10 +81,8 @@ def predict_emotion(text):
 st.markdown(
     """
     <style>
-    body {
-        background-image: url("file:///images/cheems-z7bq2c62esomoun6.jpg");
-        background-size: cover;
-        background-position: center center;
+    .stApp {
+        background: linear-gradient(135deg, #2c4d34, #8a4c2b);
         background-attachment: fixed;
     }
     </style>
@@ -117,20 +92,40 @@ st.markdown(
 
 
 # Streamlit UI
-st.title("Emotion & Sentiment Analyzer (From the frustrated researcher )")
+st.markdown("<h1 style='text-align: center;'> Emotion & Sentiment Analyzer</h1>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center;'>From the <b>frustrated</b> people having no life </p>", unsafe_allow_html=True)
 
-user_input = st.text_area("Enter a sentence to analyze:", height=150)
+user_input = st.text_area(" Enter a sentence to analyze:", height=150)
 
-if st.button("Analyze"):
+if st.button("🔍 Analyze"):
     if user_input.strip() == "":
-        st.warning("Please enter some text!")
+        st.warning("Hey! Put some nonsense text")
     else:
         emotion, sentiment, probs = predict_emotion(user_input)
 
-        st.subheader("🔍 Results")
-        st.write(f"**Predicted Emotion:** {emotion}")
-        st.write(f"**Mapped Sentiment:** {sentiment}")
+        # Main section with emotion and sentiment
+        col1, col2 = st.columns(2)
+        with col1:
+            st.markdown(f"""
+                <div style='padding: 1em; border-radius: 10px; background-color: #f4f4f4;'>
+                    <h4> Emotion:</h4>
+                    <h2 style='color: #ff6347;'>{emotion}</h2>
+                </div>
+            """, unsafe_allow_html=True)
+        with col2:
+            sentiment_color = "#2ecc71" if sentiment == "Positive" else "#e74c3c" if sentiment == "Negative" else "#f1c40f"
+            st.markdown(f"""
+                <div style='padding: 1em; border-radius: 10px; background-color: #f4f4f4;'>
+                    <h4> Sentiment:</h4>
+                    <h2 style='color: {sentiment_color};'>{sentiment}</h2>
+                </div>
+            """, unsafe_allow_html=True)
 
-        st.subheader("Emotion Probabilities")
+        # Sidebar: Emotion Probabilities
+        st.sidebar.subheader(" Emotion Probabilities")
         for emo, prob in zip(label_encoder.classes_, probs):
-            st.write(f"**{emo.capitalize()}**: {prob*100:.2f}%")
+            st.sidebar.write(f"**{emo.capitalize()}**: {prob*100:.2f}%")
+            st.sidebar.progress(float(prob))
+
+
+

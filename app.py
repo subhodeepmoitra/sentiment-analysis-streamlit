@@ -11,28 +11,28 @@ import nltk
 nltk.download('wordnet')
 nltk.download('omw-1.4')
 
-import streamlit as st
-import gdown
-import os
+#import streamlit as st
+#import gdown
+#import os
 
 # Google Drive links to the files
-file_1_url = "https://drive.google.com/uc?id=1gjn785gREju8bK5VbJhwJZK-oezQurMa"
-file_2_url = "https://drive.google.com/uc?id=1JPQmbfl9nGDDUqKoHtPGPOyJyDhat9pb"
+#file_1_url = "https://drive.google.com/uc?id=1gjn785gREju8bK5VbJhwJZK-oezQurMa"
+#file_2_url = "https://drive.google.com/uc?id=1JPQmbfl9nGDDUqKoHtPGPOyJyDhat9pb"
 
 # Paths to where you want to store the files
-file_1_path = "model_components/libtensorflow_cc.so.2"
-file_2_path = "model_components/libtensorflow_framework.so.2"
+#file_1_path = "model_components/libtensorflow_cc.so.2"
+#file_2_path = "model_components/libtensorflow_framework.so.2"
 
 # Function to download the files if they don't exist
-def download_files():
-    if not os.path.exists(file_1_path) or not os.path.exists(file_2_path):
-        st.info("Downloading necessary files...")
-        gdown.download(file_1_url, file_1_path, quiet=False)
-        gdown.download(file_2_url, file_2_path, quiet=False)
-        st.success("Files downloaded successfully!")
+#def download_files():
+#    if not os.path.exists(file_1_path) or not os.path.exists(file_2_path):
+#        st.info("Downloading necessary files...")
+#        gdown.download(file_1_url, file_1_path, quiet=False)
+#        gdown.download(file_2_url, file_2_path, quiet=False)
+#        st.success("Files downloaded successfully!")
 
 # Download files at the start
-download_files()
+#download_files()
 
 
 # Load artifacts
